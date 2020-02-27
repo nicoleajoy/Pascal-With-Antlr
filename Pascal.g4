@@ -36,11 +36,11 @@ varDec
    ;
 
 varSingleDec
-   : ID ':' BOOLEAN '=' expression
+   : ID ':' (BOOLEAN | REAL) '=' expression
    ;
 
 varListDec
-   : ID (',' ID)* ':' expression
+   : ID (',' ID)* ':' (BOOLEAN | REAL)
    ;
 
 mainBlock
@@ -67,33 +67,33 @@ assignmentStatement
    ;
 
 expression
-   : '(' expression ')' #exprExpression
+   : '(' expression ')'                                  #exprExpression
    // Special functions
-   | SQRT expression #sqrtExpression
-   | SIN expression #sinExpression
-   | COS expression #cosExpression
-   | LN expression #logExpression
-   | POWER expression #expExpression
+   | SQRT expression                                     #sqrtExpression
+   | SIN expression                                      #sinExpression
+   | COS expression                                      #cosExpression
+   | LN expression                                       #logExpression
+   | POWER expression                                    #expExpression
    // Arithmetic expressions
-   | expression op=(PRODUCT | DIVIDE | MOD) expression #multiplicativeExpression
-   | expression op=(PLUS | MINUS) expression #additiveExpression
-   | MINUS expression #negExpression
+   | expression op=(PRODUCT | DIVIDE | MOD) expression   #multiplicativeExpression
+   | expression op=(PLUS | MINUS) expression             #additiveExpression
+   | MINUS expression                                    #negExpression
    // Conditional operators
-   | expression AND expression #andExpression
-   | expression OR expression #orExpression
-   | NOT expression #notExpression
-   | expression op=(EQ | NEQ) expression #equalityExpression
-   | expression op=(GT | LT | GE | LE) expression #relationalExpression
-   | NOT expression #notExpression
+   | expression AND expression                           #andExpression
+   | expression OR expression                            #orExpression
+   | NOT expression                                      #notExpression
+   | expression op=(EQ | NEQ) expression                 #equalityExpression
+   | expression op=(GT | LT | GE | LE) expression        #relationalExpression
+   | NOT expression                                      #notExpression
    // Tiny expressions
-   | atom #atomExpression
+   | atom                                                #atomExpression
    ;
 
 atom
-   : REAL_NUMBER #numberAtom
-   | (TRUE | FALSE) #booleanAtom
-   | ID #idAtom
-   | STRING #stringAtom
+   : REAL_NUMBER        #numberAtom
+   | (TRUE | FALSE)     #booleanAtom
+   | ID                 #idAtom
+   | STRING             #stringAtom
    ;
 
 ifStatement
@@ -113,13 +113,13 @@ forDoLoop
    ;
 
 writeStatement
-   : WRITELN '()' #printNewline
-   | WRITELN '(' expression (',' expression)* ')' #printInside
+   : WRITELN '()'                                        #printNewline
+   | WRITELN '(' expression (',' expression)* ')'        #printInside
    ;
 
 readStatement
-   : READLN ('()')? #readPause
-   | READLN '(' ID (',' ID )* ')' #readInput
+   : READLN ('()')?                 #readPause
+   | READLN '(' ID (',' ID )* ')'   #readInput
    ;
 
 // Arithmetic operators
