@@ -1,6 +1,5 @@
 (*output: 21.0, 1.0, 12.0*)
 program test11;
-uses math;
 var
   r, y, e, g, h, j: real;
 begin
