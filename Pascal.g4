@@ -36,11 +36,11 @@ varDec
    ;
 
 varSingleDec
-   : ID ':' (BOOLEAN | REAL) '=' expression
+   : ID ':' type=(BOOLEAN | REAL) '=' expression
    ;
 
 varListDec
-   : ID (',' ID)* ':' (BOOLEAN | REAL)
+   : ID (',' ID)* ':' type=(BOOLEAN | REAL)
    ;
 
 mainBlock
