@@ -31,16 +31,8 @@ varDecBlock
    ;
 
 varDec 
-   : varSingleDec
-   | varListDec
-   ;
-
-varSingleDec
-   : ID ':' type=(BOOLEAN | REAL) '=' expression
-   ;
-
-varListDec
-   : ID (',' ID)* ':' type=(BOOLEAN | REAL)
+   : ID ':' type=(BOOLEAN | REAL) '=' expression   #varSingleDec
+   | ID (',' ID)* ':' type=(BOOLEAN | REAL)        #varListDec
    ;
 
 mainBlock
@@ -53,7 +45,7 @@ statements
 
 statement
    : // emptyStatement
-   | assignmentStatement
+   | assignStatement
    | ifStatement
    | caseStatement
    | whileDoLoop
@@ -62,7 +54,7 @@ statement
    | readStatement
    ;
 
-assignmentStatement
+assignStatement
    : ID ':=' expression
    ;
 
