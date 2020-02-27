@@ -5,7 +5,7 @@
 /* 
 cd C:\Javalib\pascal
 antlr4 Pascal.g4
-javac Main.java
+javac *.java
 java Main tests/test16.pas
 (# between 1-19)
 */
@@ -40,13 +40,11 @@ bool
    ;
 
 varSingleDec
-   : ID ':' BOOLEAN '=' bool #varSingleBoolDec
-   | ID ':' REAL '=' REAL_NUMBER #varSingleRealDec
+   : ID ':' BOOLEAN '=' expression
    ;
 
 varListDec
-   : ID (',' ID)* ':' BOOLEAN #varListBoolDec
-   | ID (',' ID)* ':' REAL #varListRealDec
+   : ID (',' ID)* ':' expression
    ;
 
 mainBlock
@@ -60,7 +58,7 @@ statements
 statement
    : // emptyStatement
    | assignmentStatement
-   | ifStatement 
+   | ifStatement
    | caseStatement
    | whileDoLoop
    | forDoLoop
@@ -69,72 +67,58 @@ statement
    ;
 
 assignmentStatement
-   : ID ':=' expression #initRealVar
-   | ID ':=' condition #initBoolVar
+   : ID ':=' expression
    ;
 
 expression
-   : '(' e=expression ')' #exprExpr
-   | SQRT e=expression #sqrtExpr
-   | SIN e=expression #sinExpr
-   | COS e=expression #cosExpr
-   | LN e=expression #logExpr
-   | EXP e=expression #expExpr
-   | eL=expression PRODUCT eR=expression #mulExpr
-   | eL=expression DIVIDE eR=expression #divExpr
-   | eL=expression PLUS eR=expression #addExpr
-   | eL=expression MINUS eR=expression #subExpr
-   | eL=expression MOD eR=expression #modExpr
-   | MINUS REAL_NUMBER #negExpr
-   | REAL_NUMBER #numExpr
-   | ID #varExpr
+   : '(' expression ')' #exprExpression
+   // Special functions
+   | SQRT expression #sqrtExpression
+   | SIN expression #sinExpression
+   | COS expression #cosExpression
+   | LN expression #logExpression
+   | POWER expression #expExpression
+   // Arithmetic expressions
+   | expression op=(PRODUCT | DIVIDE | MOD) expression #multiplicativeExpression
+   | expression op=(PLUS | MINUS) expression #additiveExpression
+   | MINUS expression #negExpression
+   // Conditional operators
+   | expression AND expression #andExpression
+   | expression OR expression #orExpression
+   | NOT expression #notExpression
+   | expression op=(EQ | NEQ) expression #equalityExpression
+   | expression op=(GT | LT | GE | LE) expression #relationalExpression
+   | NOT expression #notExpression
+   // Tiny expressions
+   | atom #atomExpression
    ;
 
-condition
-   : '(' e=condition ')' #conCond
-   | eL=condition AND eR=condition #andcond
-   | eL=condition OR eR=condition #orCond
-   | NOT e=condition #notCond
-   | eL=condition XOR eR=condition #xorCond
-   | cL=expression EQ cR=expression #eqCond
-   | cL=expression NEQ cR=expression #neqCod
-   | cL=expression GT cR=expression #gtCond
-   | cL=expression LT cR=expression #ltCond
-   | cL=expression GE cR=expression #geCond
-   | cL=expression LE cR=expression #leCond
-   | NOT c=condition #notCond
-   | bool #boolCond
-   | ID #varCond
+atom
+   : REAL_NUMBER #numberAtom
+   | (TRUE | FALSE) #booleanAtom
+   | ID #idAtom
+   | STRING #stringAtom
    ;
 
 ifStatement
-   : IF condition THEN statement (ELSE statement)?
+   : IF expression THEN statement (ELSE statement)?
    ;
 
 caseStatement
-   : CASE expression OF (REAL_NUMBER ':' statements)+ END
-   | CASE condition OF (bool ':' statements)+ END
-   | CASE ID OF (ID ':' statements)+ END
+   : CASE expression OF (expression ':' statements)+ END
    ;
 
 whileDoLoop
-   : WHILE condition DO BEGIN statements END
+   : WHILE expression DO BEGIN statements END
    ;
 
 forDoLoop
-   : FOR ID ':=' REAL_NUMBER TO REAL_NUMBER DO BEGIN statements END
+   : FOR ID ':=' expression TO expression DO BEGIN statements END
    ;
 
 writeStatement
    : WRITELN '()' #printNewline
-   | WRITELN '(' writeParameter (',' writeParameter)* ')' #printStuffInside
-   ;
-
-writeParameter
-   : expression #printExpr
-   | condition #printCond
-   | STRING_LIT #printString
-   | ID #printVarVal
+   | WRITELN '(' expression (',' expression)* ')' #printInside
    ;
 
 readStatement
@@ -152,7 +136,7 @@ SQRT           : 'sqrt';
 SIN            : 'sin';
 COS            : 'cos';
 LN             : 'ln';
-EXP            : 'exp';
+POWER          : 'exp';
 
 // Boolean operators
 TRUE           : 'true';
@@ -160,7 +144,6 @@ FALSE          : 'false';
 AND            : 'and';	
 NOT            : 'not';
 OR             : 'or';
-XOR            : 'xor';
 
 // Logical operators
 EQ             : '=';
@@ -197,5 +180,5 @@ WRITELN        : 'writeln';
 // Essentials
 ID             : [A-Za-z][_A-Za-z0-9]*;
 REAL_NUMBER    : [0-9]+('.'[0-9]+)?;
-STRING_LIT     : '\'' (.*?) '\'';
+STRING         : '\'' (.*?) '\'';
 WS             : [ \t\r\n]+ -> skip;
