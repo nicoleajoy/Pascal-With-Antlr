@@ -1,6 +1,15 @@
 /***** PROJECT 2 *****/
 // Student Group: Nicole Ajoy & Yvette Williamson
 
+/***** HOW TO RUN *****/
+/* 
+cd C:\Javalib\pascal
+antlr4 Pascal.g4
+javac Main.java
+java Main tests/test16.pas
+(# between 1-19)
+*/
+
 /*********************************************************/
 
 grammar Pascal;
@@ -31,13 +40,13 @@ bool
    ;
 
 varSingleDec
-   : ID ':' BOOLEAN '=' bool
-   | ID ':' REAL '=' REAL_NUMBER
+   : ID ':' BOOLEAN '=' bool #varSingleBoolDec
+   | ID ':' REAL '=' REAL_NUMBER #varSingleRealDec
    ;
 
 varListDec
-   : ID (',' ID)* ':' BOOLEAN
-   | ID (',' ID)* ':' REAL 
+   : ID (',' ID)* ':' BOOLEAN #varListBoolDec
+   | ID (',' ID)* ':' REAL #varListRealDec
    ;
 
 mainBlock
@@ -60,42 +69,42 @@ statement
    ;
 
 assignmentStatement
-   : ID ':=' expression 
-   | ID ':=' condition 
+   : ID ':=' expression #initRealVar
+   | ID ':=' condition #initBoolVar
    ;
 
 expression
-   : '(' e=expression ')'
-   | SQRT e=expression
-   | SIN e=expression
-   | COS e=expression
-   | LN e=expression
-   | EXP e=expression
-   | eL=expression PRODUCT eR=expression
-   | eL=expression DIVIDE eR=expression 
-   | eL=expression PLUS eR=expression
-   | eL=expression MINUS eR=expression
-   | eL=expression MOD eR=expression
-   | MINUS REAL_NUMBER
-   | REAL_NUMBER
-   | ID
+   : '(' e=expression ')' #exprExpr
+   | SQRT e=expression #sqrtExpr
+   | SIN e=expression #sinExpr
+   | COS e=expression #cosExpr
+   | LN e=expression #logExpr
+   | EXP e=expression #expExpr
+   | eL=expression PRODUCT eR=expression #mulExpr
+   | eL=expression DIVIDE eR=expression #divExpr
+   | eL=expression PLUS eR=expression #addExpr
+   | eL=expression MINUS eR=expression #subExpr
+   | eL=expression MOD eR=expression #modExpr
+   | MINUS REAL_NUMBER #negExpr
+   | REAL_NUMBER #numExpr
+   | ID #varExpr
    ;
 
 condition
-   : '(' e=condition ')'
-   | eL=condition AND eR=condition
-   | eL=condition OR eR=condition
-   | NOT e=condition
-   | eL=condition XOR eR=condition 
-   | cL=expression EQ cR=expression
-   | cL=expression NEQ cR=expression
-   | cL=expression GT cR=expression
-   | cL=expression LT cR=expression
-   | cL=expression GE cR=expression 
-   | cL=expression LE cR=expression
-   | NOT c=condition
-   | bool
-   | ID
+   : '(' e=condition ')' #conCond
+   | eL=condition AND eR=condition #andcond
+   | eL=condition OR eR=condition #orCond
+   | NOT e=condition #notCond
+   | eL=condition XOR eR=condition #xorCond
+   | cL=expression EQ cR=expression #eqCond
+   | cL=expression NEQ cR=expression #neqCod
+   | cL=expression GT cR=expression #gtCond
+   | cL=expression LT cR=expression #ltCond
+   | cL=expression GE cR=expression #geCond
+   | cL=expression LE cR=expression #leCond
+   | NOT c=condition #notCond
+   | bool #boolCond
+   | ID #varCond
    ;
 
 ifStatement
@@ -117,20 +126,20 @@ forDoLoop
    ;
 
 writeStatement
-   : WRITELN '()'
-   | WRITELN '(' writeParameter (',' writeParameter)* ')'
+   : WRITELN '()' #printNewline
+   | WRITELN '(' writeParameter (',' writeParameter)* ')' #printStuffInside
    ;
 
 writeParameter
-   : expression
-   | condition
-   | STRING_LIT
-   | ID
+   : expression #printExpr
+   | condition #printCond
+   | STRING_LIT #printString
+   | ID #printVarVal
    ;
 
 readStatement
-   : READLN ('()')?
-   | READLN '(' ID (',' ID )* ')'
+   : READLN ('()')? #readPause
+   | READLN '(' ID (',' ID )* ')' #readInput
    ;
 
 // Arithmetic operators
