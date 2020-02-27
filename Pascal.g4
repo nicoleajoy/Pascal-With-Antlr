@@ -35,10 +35,6 @@ varDec
    | varListDec
    ;
 
-bool
-   : (TRUE | FALSE)
-   ;
-
 varSingleDec
    : ID ':' BOOLEAN '=' expression
    ;
