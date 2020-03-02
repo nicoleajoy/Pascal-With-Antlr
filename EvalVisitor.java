@@ -33,13 +33,34 @@ public class EvalVisitor extends PascalBaseVisitor<Value> {
 
 	@Override 
 	public Value visitVarListDec(PascalParser.VarListDecContext ctx) {
-		System.out.println("variable list declaration");
-		return Value.VOID;
+		System.out.println("var list declaration");
+		System.out.println("var list size: " + ctx.ID().size());
+
+        switch (ctx.type.getType()) {
+			case PascalParser.BOOLEAN:
+				//System.out.println("var list type: boolean");
+				for (int i = 0; i < ctx.ID().size(); i++) {
+					String id = ctx.ID(i).getText();
+					System.out.println("ID[" + i + "]: " + id);
+					memory.put(id, new Value(false));
+				}
+				return Value.VOID;
+			case PascalParser.REAL:
+				//System.out.println("var list type: real");
+				for (int i = 0; i < ctx.ID().size(); i++) {
+					String id = ctx.ID(i).getText();
+					System.out.println("ID [" + i + "]: " + id);
+					memory.put(id, new Value(0.0));
+				}
+				return Value.VOID;
+			default:
+				throw new RuntimeException("unknown type: " + ctx.type.getType());
+		}
 	}
 	
 
 	@Override
-    public Value visitAssignStatement(PascalParser.AssignStatementContext ctx) {
+	public Value visitAssignStatement(PascalParser.AssignStatementContext ctx) {
 		System.out.println("assign");
 		String id = ctx.getText();
 		Value v = this.visit(ctx.expression());
@@ -49,13 +70,13 @@ public class EvalVisitor extends PascalBaseVisitor<Value> {
 	
 
 	@Override
-    public Value visitExprExpression(PascalParser.ExprExpressionContext ctx) {
+	public Value visitParenthesisExpression(PascalParser.ParenthesisExpressionContext ctx) {
         return this.visit(ctx.expression());
     }
 
 
 	@Override
-    public Value visitSqrtExpression(PascalParser.SqrtExpressionContext ctx) {
+	public Value visitSqrtExpression(PascalParser.SqrtExpressionContext ctx) {
 		System.out.println("sqrt");
 		Value v = this.visit(ctx.expression());
         return new Value(Math.sqrt(v.asDouble()));
@@ -63,14 +84,14 @@ public class EvalVisitor extends PascalBaseVisitor<Value> {
 
 
 	@Override
-    public Value visitSinExpression(PascalParser.SinExpressionContext ctx) { 
+	public Value visitSinExpression(PascalParser.SinExpressionContext ctx) { 
 		System.out.println("sin");
 		Value v = this.visit(ctx.expression());
         return new Value(Math.sin(v.asDouble()));
 	}
 
 
-	@Override 
+	@Override
 	public Value visitCosExpression(PascalParser.CosExpressionContext ctx) {
 		System.out.println("cos");
 		Value v = this.visit(ctx.expression());
@@ -79,14 +100,14 @@ public class EvalVisitor extends PascalBaseVisitor<Value> {
 
 
 	@Override
-    public Value visitLogExpression(PascalParser.LogExpressionContext ctx) {
+	public Value visitLogExpression(PascalParser.LogExpressionContext ctx) {
 		System.out.println("log");
 		Value v = this.visit(ctx.expression());
         return new Value(Math.log(v.asDouble()));
 	}
 
 
-	@Override 
+	@Override
 	public Value visitExpExpression(PascalParser.ExpExpressionContext ctx) { 
 		System.out.println("exp");
         Value v = this.visit(ctx.expression());
@@ -95,7 +116,7 @@ public class EvalVisitor extends PascalBaseVisitor<Value> {
 
 
 	@Override
-   	public Value visitMultiplicativeExpression(PascalParser.MultiplicativeExpressionContext ctx) {
+	public Value visitMultiplicativeExpression(PascalParser.MultiplicativeExpressionContext ctx) {
 		Value left = this.visit(ctx.expression(0));
         Value right = this.visit(ctx.expression(1));
 
@@ -156,53 +177,53 @@ public class EvalVisitor extends PascalBaseVisitor<Value> {
 	}
 
 
-	// @Override 
-	// public Value visitRelationalExpression(PascalParser.RelationalExpressionContext ctx) {
-	// 	System.out.println("relational");
-	// 	Value left = this.visit(ctx.expression(0));
-    //     Value right = this.visit(ctx.expression(1));
+	@Override
+	public Value visitRelationalExpression(PascalParser.RelationalExpressionContext ctx) {
+		System.out.println("relational");
+		Value left = this.visit(ctx.expression(0));
+        Value right = this.visit(ctx.expression(1));
 		
-    //     switch (ctx.op.getType()) {
-	// 		case PascalParser.GT:
-	// 			if (left != null && right != null) {
-	// 				System.out.println(left.asDouble());
-	// 				return new Value(left.asDouble() > right.asDouble());
-	// 			}
-	// 		case PascalParser.LT:
-	// 			if (left != null && right != null)  {
-	// 				System.out.println(left.asDouble());
-	// 				return new Value(left.asDouble() < right.asDouble());
-	// 			}
-	// 		case PascalParser.GE:
-	// 			if (left != null && right != null)  {
-	// 				System.out.println(left.asDouble());
-	// 				return new Value(left.asDouble() >= right.asDouble());
-	// 			}
-	// 		case PascalParser.LE:
-	// 			if (left != null && right != null)  {
-	// 				System.out.println(left.asDouble());
-	// 				return new Value(left.asDouble() <= right.asDouble());
-	// 			}
-    //         default:
-	// 			throw new RuntimeException("unknown operator: " + PascalParser.tokenNames[ctx.op.getType()]);
-    //     }
-	// 	return this.visit(ctx.expression(0));
-	// }
+        switch (ctx.op.getType()) {
+			case PascalParser.GT:
+				if (left != null && right != null) {
+					System.out.println(left.asDouble());
+					return new Value(left.asDouble() > right.asDouble());
+				}
+			case PascalParser.LT:
+				if (left != null && right != null)  {
+					System.out.println(left.asDouble());
+					return new Value(left.asDouble() < right.asDouble());
+				}
+			case PascalParser.GTE:
+				if (left != null && right != null)  {
+					System.out.println(left.asDouble());
+					return new Value(left.asDouble() >= right.asDouble());
+				}
+			case PascalParser.LTE:
+				if (left != null && right != null)  {
+					System.out.println(left.asDouble());
+					return new Value(left.asDouble() <= right.asDouble());
+				}
+            default:
+				throw new RuntimeException("unknown operator: " + PascalParser.tokenNames[ctx.op.getType()]);
+		}
+	}
 
 
-	// @Override 
-	// public Value visitPrintInside(PascalParser.PrintInsideContext ctx) { 
-	// 	//Value value = this.visit(ctx.expression(0));
-	// 	System.out.println("write");
-	// 	return Value.VOID;
-	// }
+	@Override 
+	public Value visitWriteInside(PascalParser.WriteInsideContext ctx) {
+		System.out.println("write inside");
+		System.out.println();
+		return Value.VOID;
+	}
 
 
-	// @Override 
-	// public Value visitPrintNewline(PascalParser.PrintNewlineContext ctx) {
-	// 	System.out.println("writeln");
-	// 	return Value.VOID;
-	// }
+	@Override 
+	public Value visitWriteNewline(PascalParser.WriteNewlineContext ctx) {
+		System.out.println("write ln");
+		System.out.println();
+		return Value.VOID;
+	}
 
 
 	// @Override 
@@ -234,6 +255,7 @@ public class EvalVisitor extends PascalBaseVisitor<Value> {
 	// 	Value value = this.visit(ctx.expression());
 	// 	//System.out.println("while");
 	// 	//System.out.println(value.asBoolean());
+		
 	// 	if (value != null){
 	// 		while(value.asBoolean()) {
 	// 			// evaluate code block
@@ -242,6 +264,7 @@ public class EvalVisitor extends PascalBaseVisitor<Value> {
 	// 			value = this.visit(ctx.expression());
 	// 		}
 	// 	}
+
     //     return Value.VOID;
 	// }
 
@@ -260,6 +283,7 @@ public class EvalVisitor extends PascalBaseVisitor<Value> {
 	// 			value = this.visit(ctx.expression());
 	// 		}
 	// 	}
+
     //    return Value.VOID;
 	// }
 
