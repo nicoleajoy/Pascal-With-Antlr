@@ -59,7 +59,7 @@ assignStatement
    ;
 
 expression
-   : '(' expression ')'                                  #exprExpression
+   : '(' expression ')'                                  #parenthesisExpression
    // Special functions
    | SQRT expression                                     #sqrtExpression
    | SIN expression                                      #sinExpression
@@ -75,7 +75,7 @@ expression
    | expression OR expression                            #orExpression
    | NOT expression                                      #notExpression
    | expression op=(EQ | NEQ) expression                 #equalityExpression
-   | expression op=(GT | LT | GE | LE) expression        #relationalExpression
+   | expression op=(GT | LT | GTE | LTE) expression      #relationalExpression
    | NOT expression                                      #notExpression
    // Tiny expressions
    | atom                                                #atomExpression
@@ -105,8 +105,8 @@ forDoLoop
    ;
 
 writeStatement
-   : WRITELN '()'                                        #printNewline
-   | WRITELN '(' expression (',' expression)* ')'        #printInside
+   : WRITELN '()'                                        #writeNewline
+   | WRITELN '(' expression (',' expression)* ')'        #writeInside
    ;
 
 readStatement
@@ -138,8 +138,8 @@ EQ             : '=';
 NEQ            : '<>';
 GT             : '>';
 LT             : '<';
-GE             : '>=';
-LE             : '<=';
+GTE            : '>=';
+LTE            : '<=';
 
 // Comments
 COMMENT_B      : '{' (.*?) '}' -> skip;
