@@ -1,14 +1,9 @@
 // Resource: https://github.com/bkiers/Mu/blob/master/src/main/java/mu/Value.java
 
 public class Value {
-    Object value;
+    final Object value;
     
-    public static Value NULL = new Value();
-    public static Value VOID = new Value();
-
-    private Value() {
-        value = new Object();
-    }
+    public static Value VOID = new Value(new Object());
 
     public Value(Object v) {
         value = v;
@@ -20,6 +15,18 @@ public class Value {
 
     public Double asDouble() {
         return (Double)value;
+    }
+
+    public String asString() {
+        return String.valueOf(value);
+    }
+
+    public boolean isDouble() {
+        return value instanceof Double;
+    }
+
+    public boolean isBoolean() {
+        return value instanceof Boolean;
     }
 
     @Override
