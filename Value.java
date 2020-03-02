@@ -5,6 +5,10 @@ public class Value {
     
     public static Value VOID = new Value(new Object());
 
+    public Value() {
+        value = null;
+    }
+
     public Value(Object v) {
         value = v;
     }
@@ -29,7 +33,6 @@ public class Value {
         return value instanceof Boolean;
     }
 
-    @Override
     public boolean equals(Object o) {
         if (value == o) {
             return true;
@@ -42,10 +45,5 @@ public class Value {
         }
         Value that = (Value)o;
         return this.value.equals(that.value);
-    }
-
-    @Override
-    public String toString() {
-        return String.valueOf(value);
     }
 }
