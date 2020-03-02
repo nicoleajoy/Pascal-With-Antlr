@@ -65,7 +65,7 @@ expression
    | SIN expression                                      #sinExpression
    | COS expression                                      #cosExpression
    | LN expression                                       #logExpression
-   | POWER expression                                    #expExpression
+   | EXP expression                                      #expExpression
    // Arithmetic expressions
    | expression op=(PRODUCT | DIVIDE | MOD) expression   #multiplicativeExpression
    | expression op=(PLUS | MINUS) expression             #additiveExpression
@@ -124,7 +124,7 @@ SQRT           : 'sqrt';
 SIN            : 'sin';
 COS            : 'cos';
 LN             : 'ln';
-POWER          : 'exp';
+EXP            : 'exp';
 
 // Boolean operators
 TRUE           : 'true';
