@@ -1,25 +1,24 @@
 # Pascal With Antlr
-## Project 2
 
-Hello! 
+Hello! Here are some notes regarding this project.
 
-Here are some notes regarding this project.
-
-### GROUP
+## GROUP
 - Nicole Ajoy
 - Yvette Williamson
 
-### HOW TO RUN
+## HOW TO RUN
     antlr Pascal.g4 -visitor
     javac *.java 
-    java Main tests/test#.pas
-    (number ranges from 1-20)
+    java Main tests/test20.pas
 
-### RESOURCES USED
+(NOTE: test number ranges from 1-20)
+
+## RESOURCES USED
 - [Mu Repository](https://github.com/bkiers/Mu)
 - [TinyLanguage Repository](https://github.com/bkiers/Mu)
 - [Pascal Tutorial](https://www.tutorialspoint.com/pascal/index.htm)
 
+## FINAL COMMENTS
 Thank you.
 
-*Nicole, Yvette*
+*- Nicole, Yvette*
