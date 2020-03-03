@@ -23,7 +23,17 @@ programHeader
    ;
 
 partBlock
-   : varDecBlock
+   : subprogramBlock
+   | varDecBlock
+   ;
+
+subprogramBlock
+   : FUNCTION ID '(' parameters ')' ':' type=(BOOLEAN | REAL) ';' (varDecBlock)* BEGIN statements END ';'   #functionBlock
+   | PROCEDURE ID '(' parameters ')' ';' (varDecBlock)* BEGIN statements END ';'                            #procedureBlock
+   ;
+
+parameters
+   : varDec (';' varDec)*
    ;
 
 varDecBlock
@@ -52,6 +62,7 @@ statement
    | forDoLoop
    | writeStatement
    | readStatement
+   | subprogramCall
    ;
 
 assignStatement
@@ -60,6 +71,7 @@ assignStatement
 
 expression
    : '(' expression ')'                                  #parenthesisExpression
+   | subprogramCall                                      #subprogramCallExpression
    // Special functions
    | SQRT expression                                     #sqrtExpression
    | SIN expression                                      #sinExpression
@@ -79,6 +91,14 @@ expression
    | NOT expression                                      #notExpression
    // Tiny expressions
    | atom                                                #atomExpression
+   ;
+
+subprogramCall
+   : ID '(' arguments ')'
+   ;
+
+arguments
+   : ID (',' ID)*
    ;
 
 atom
@@ -113,6 +133,7 @@ readStatement
    : READLN ('()')?                 #readPause
    | READLN '(' ID (',' ID )* ')'   #readInput
    ;
+
 
 // Arithmetic operators
 PLUS           : '+';
@@ -151,6 +172,7 @@ BOOLEAN        : 'boolean';
 CASE           : 'case';
 CONST          : 'const';
 DO             : 'do';
+FUNCTION       : 'function';
 OF             : 'of';
 ELSE           : 'else';
 END            : 'end';
@@ -161,6 +183,7 @@ READLN         : 'readln';
 REAL           : 'real';
 TO             : 'to';
 THEN           : 'then';
+PROCEDURE      : 'procedure';
 VAR            : 'var';
 WHILE          : 'while';
 WRITELN        : 'writeln';
