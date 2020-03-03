@@ -1,16 +1,7 @@
 /***** PROJECT 2 *****/
-// Student Group: Nicole Ajoy & Yvette Williamson
+// By Nicole Ajoy & Yvette Williamson
 
-/***** HOW TO RUN *****/
-/* 
-cd C:\Javalib\pascal
-antlr4 Pascal.g4
-javac *.java
-java Main tests/test16.pas
-(# between 1-19)
-*/
-
-/*********************************************************/
+/*----------------------------------------------------*/
 
 grammar Pascal;
 
@@ -72,24 +63,23 @@ assignStatement
 expression
    : '(' expression ')'                                  #parenthesisExpression
    | subprogramCall                                      #subprogramCallExpression
-   // Special functions
+   // special functions
    | SQRT expression                                     #sqrtExpression
    | SIN expression                                      #sinExpression
    | COS expression                                      #cosExpression
    | LN expression                                       #logExpression
    | EXP expression                                      #expExpression
-   // Arithmetic expressions
+   // arithmetic expressions
    | expression op=(PRODUCT | DIVIDE | MOD) expression   #multiplicativeExpression
    | expression op=(PLUS | MINUS) expression             #additiveExpression
    | MINUS expression                                    #negExpression
-   // Conditional operators
+   // conditional operators
+   | NOT expression                                      #notExpression
    | expression AND expression                           #andExpression
    | expression OR expression                            #orExpression
-   | NOT expression                                      #notExpression
    | expression op=(EQ | NEQ) expression                 #equalityExpression
    | expression op=(GT | LT | GTE | LTE) expression      #relationalExpression
-   | NOT expression                                      #notExpression
-   // Tiny expressions
+   // tiny expressions
    | atom                                                #atomExpression
    ;
 
@@ -134,8 +124,7 @@ readStatement
    | READLN '(' ID (',' ID )* ')'   #readInput
    ;
 
-
-// Arithmetic operators
+// arithmetic operators
 PLUS           : '+';
 MINUS          : '-';
 PRODUCT        : '*';
@@ -147,14 +136,14 @@ COS            : 'cos';
 LN             : 'ln';
 EXP            : 'exp';
 
-// Boolean operators
+// boolean operators
 TRUE           : 'true';
 FALSE          : 'false';
 AND            : 'and';	
 NOT            : 'not';
 OR             : 'or';
 
-// Logical operators
+// logical operators
 EQ             : '=';
 NEQ            : '<>';
 GT             : '>';
@@ -162,11 +151,11 @@ LT             : '<';
 GTE            : '>=';
 LTE            : '<=';
 
-// Comments
+// comments
 COMMENT_B      : '{' (.*?) '}' -> skip;
 COMMENT_P      : '(*' (.*?) '*)' -> skip;
 
-// Other keywords
+// keywords
 BEGIN          : 'begin';
 BOOLEAN        : 'boolean';
 CASE           : 'case';
@@ -188,7 +177,7 @@ VAR            : 'var';
 WHILE          : 'while';
 WRITELN        : 'writeln';
 
-// Essentials
+// atoms
 ID             : [A-Za-z][_A-Za-z0-9]*;
 REAL_NUMBER    : [0-9]+('.'[0-9]+)?;
 STRING         : '\'' (.*?) '\'';
