@@ -6,8 +6,8 @@ Hello!
 Here are some notes regarding this project.
 
 ### GROUP
-    Nicole Ajoy
-    Yvette Williamson
+- Nicole Ajoy
+- Yvette Williamson
 
 ### HOW TO RUN
     antlr Pascal.g4 -visitor
@@ -16,9 +16,9 @@ Here are some notes regarding this project.
     (number ranges from 1-20)
 
 ### RESOURCES USED
-    https://github.com/bkiers/Mu
-    https://github.com/bkiers/tiny-language-antlr4
-    https://www.tutorialspoint.com/pascal/index.htm
+- [Mu Repository](https://github.com/bkiers/Mu)
+- [TinyLanguage Repository](https://github.com/bkiers/Mu)
+- [Pascal Tutorial](https://www.tutorialspoint.com/pascal/index.htm)
 
 Thank you.
 
