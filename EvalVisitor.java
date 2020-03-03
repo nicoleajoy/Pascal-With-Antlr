@@ -1,3 +1,8 @@
+/***** PROJECT 2 *****/
+// By Nicole Ajoy & Yvette Williamson
+
+/*----------------------------------------------------*/
+
 import org.antlr.v4.runtime.misc.NotNull;
 
 import java.util.HashMap;
@@ -6,9 +11,6 @@ import java.util.Map;
 
 public class EvalVisitor extends PascalBaseVisitor<Value> {
     private Map<String,Value> memory = new HashMap<String,Value>();
-
-
-	/*********************************************************/
 
 
 	@Override 
@@ -62,10 +64,10 @@ public class EvalVisitor extends PascalBaseVisitor<Value> {
 	@Override
 	public Value visitAssignStatement(PascalParser.AssignStatementContext ctx) {
 		//System.out.println("assign");
-		String id = ctx.getText();
+		String id = ctx.ID().getText();
 		Value v = this.visit(ctx.expression());
 		//System.out.println("Id: " + id + " | Value: " + v.asString());
-		return memory.put(id, new Value(v));
+		return memory.put(id, v);
 	}
 	
 
@@ -267,19 +269,34 @@ public class EvalVisitor extends PascalBaseVisitor<Value> {
 	}
 
 
-	// @Override 
-	// public Value visitIfStatement(PascalParser.IfStatementContext ctx) {
-	// 	//System.out.println("if");
-    //     Value value = this.visit(ctx.expression());
-    //     String choice = this.visit(ctx.expression()).asString();
-	// 	System.out.println(choice);
+	@Override
+	public Value visitReadPause(PascalParser.ReadPauseContext ctx) {
+		return Value.VOID;
+	}
 
-	// 	if (value != null) {
-			
-    //     }
+
+	@Override
+	public Value visitReadInput(PascalParser.ReadInputContext ctx) {
+		return Value.VOID;
+	}
+
+
+	@Override 
+	public Value visitIfStatement(PascalParser.IfStatementContext ctx) {
+        //System.out.println("if");
+        //System.out.println("expression list size: " + ctx.expression(0).size());
+        String choice = this.visit(ctx.expression()).asString();
+		//System.out.println(choice);
+
+		if (choice == "true") {
+			return this.visit(ctx.statement(0));
+        }
+        if (choice == "false") {
+			return this.visit(ctx.statement(1));
+        }
         
-    //    return Value.VOID;
-	// }
+       return Value.VOID;
+	}
 
 
 	// @Override 
