@@ -6,25 +6,31 @@
 grammar Pascal;
 
 program
-   : programHeader ((partBlock)* mainBlock)+
+   : programHeader blocks
    ;
 
 programHeader
    : PROGRAM ID ';'
    ;
 
-partBlock
-   : subprogramBlock
-   | varDecBlock
+blocks
+   : (functionBlock | procedureBlock)* mainBlock
    ;
 
-subprogramBlock
-   : FUNCTION ID '(' parameters ')' ':' type=(BOOLEAN | REAL) ';' (varDecBlock)* BEGIN statements END ';'   #functionBlock
-   | PROCEDURE ID '(' parameters ')' ';' (varDecBlock)* BEGIN statements END ';'                            #procedureBlock
+functionBlock
+   : FUNCTION ID '(' parameters ')' ':' type=(BOOLEAN | REAL) ';' (varDecBlock)* BEGIN statements END ';'
+   ;
+
+procedureBlock
+   : PROCEDURE ID '(' parameters ')' ';' (varDecBlock)* BEGIN statements END ';'
    ;
 
 parameters
    : varDec (';' varDec)*
+   ;
+
+mainBlock
+   : (varDecBlock)* BEGIN statements END '.'
    ;
 
 varDecBlock
@@ -34,10 +40,6 @@ varDecBlock
 varDec 
    : ID ':' type=(BOOLEAN | REAL) '=' expression   #varSingleDec
    | ID (',' ID)* ':' type=(BOOLEAN | REAL)        #varListDec
-   ;
-
-mainBlock
-   : BEGIN statements END '.'
    ;
 
 statements
