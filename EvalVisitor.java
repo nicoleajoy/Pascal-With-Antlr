@@ -11,7 +11,70 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class EvalVisitor extends PascalBaseVisitor<Value> {
-    private Map<String,Value> memory = new HashMap<String,Value>();
+	private Map<String,Value> memory = new HashMap<String,Value>();
+
+	private Scope scope = new Scope();
+	private Map<String, String> function = new HashMap<String, String>();
+	private Map<String, String> procedure = new HashMap<String, String>();
+	Scope scopefunc = new Scope();
+
+	int calls =0;
+	int pcalls=0;
+
+
+	@Override
+	public Value visitFunctionBlock(PascalParser.FunctionBlockContext ctx){
+		System.out.println("function");
+		String id = ctx.ID().getText();
+		System.out.println(id);
+		function.put("new", id);
+		String pars = ctx.parameters(0).getText();
+		Value val = this.visit(ctx.parameters(0));
+		
+		List<String> elephantList = Arrays.asList(pars.split(",|:"));
+		System.out.println("this is : "+elephantList.size());
+		for (int t = 0; t < elephantList.size()-1; t++) {
+			scopefunc.setValue(elephantList.get(t), val);
+			System.out.println(elephantList.get(t));
+		}
+		// for(int i = 0; i< ctx.parameters().size(); i++){
+			String funct = ctx.ID().getText();
+		 	//Value val = this.visit(ctx.parameters(0));
+		 	scopefunc.setValue(funct, val);
+			this.visit(ctx.statements());
+			if (this.visit(ctx.statements()) == null) {
+				scopefunc.resetValue(id, val);
+				function.clear(); 
+				return Value.VOID;
+			 }
+		// }
+		
+		return Value.VOID;
+	}
+
+
+	@Override
+	public Value visitProcedureBlock(PascalParser.ProcedureBlockContext ctx){
+		System.out.println("procedure");
+		String id = ctx.ID().getText();
+		System.out.println(id);
+		calls++;
+		procedure.put("new", id);
+		Scope scope = new Scope();
+		return Value.VOID;
+	}
+
+
+	@Override
+	public Value visitParameters(PascalParser.ParametersContext ctx){
+		//System.out.println("parameters");
+		String id = function.get(0);
+		//String id = funcalls[0];
+		Value val =this.visit(ctx.varDec(0));
+		System.out.println(ctx.varDec(0).getText());
+		scopefunc.setValue(id, val);
+		return Value.VOID;
+	}
 
 
 	@Override 
@@ -43,6 +106,7 @@ public class EvalVisitor extends PascalBaseVisitor<Value> {
 				for (int i = 0; i < ctx.ID().size(); i++) {
 					String id = ctx.ID(i).getText();
 					//System.out.println("ID[" + i + "]: " + id);
+					scope.setValue(id, new Value(false));
 					memory.put(id, new Value(false));
 				}
 				return Value.VOID;
@@ -51,6 +115,7 @@ public class EvalVisitor extends PascalBaseVisitor<Value> {
 				for (int i = 0; i < ctx.ID().size(); i++) {
 					String id = ctx.ID(i).getText();
 					//System.out.println("ID [" + i + "]: " + id);
+					scope.setValue(id, new Value(0.0));
 					memory.put(id, new Value(0.0));
 				}
 				return Value.VOID;
@@ -64,6 +129,7 @@ public class EvalVisitor extends PascalBaseVisitor<Value> {
 	public Value visitAssignStatement(PascalParser.AssignStatementContext ctx) {
 		String id = ctx.ID().getText();
 		Value val = this.visit(ctx.expression());
+		scope.setValue(id, v);
 		//System.out.println("Id: " + id + " | Value: " + v.asString());
 		return memory.put(id, val);
 	}
@@ -361,7 +427,7 @@ public class EvalVisitor extends PascalBaseVisitor<Value> {
 					}
 					return Value.VOID;
 				}
-            default:
+			default:
 				throw new RuntimeException("unknown count: " + PascalParser.tokenNames[ctx.count.getType()]);
 		}
 	}
@@ -373,33 +439,34 @@ public class EvalVisitor extends PascalBaseVisitor<Value> {
 		return new Value(Double.valueOf(ctx.getText()));
 	}
 
-
-	@Override 
+	
+	@Override
 	public Value visitBooleanAtom(PascalParser.BooleanAtomContext ctx) { 
 		//System.out.println("boolean atom");
 		return new Value(Boolean.valueOf(ctx.getText()));
 	}
 
-
-    @Override 
-    public Value visitIdAtom(PascalParser.IdAtomContext ctx) {
+	
+	@Override
+	public Value visitIdAtom(PascalParser.IdAtomContext ctx) {
 		//System.out.println("id atom");
 		String id = ctx.getText();
 		Value val = memory.get(id);
 		
-        if (val == null) {
-            throw new RuntimeException("no such variable: " + id);
-        }
-        return val;
+		if (val == null) {
+			throw new RuntimeException("no such variable: " + id);
+		}
+		
+		return val;
 	}
-
-
-    @Override 
-    public Value visitStringAtom(PascalParser.StringAtomContext ctx) {
+	
+	
+	@Override
+	public Value visitStringAtom(PascalParser.StringAtomContext ctx) {
 		//System.out.println("string atom");
 		String str = ctx.getText();
-        // strip quotes
-        str = str.substring(1, str.length() - 1).replace("\"\"", "\"");
-        return new Value(str);
+		// strip quotes
+		str = str.substring(1, str.length() - 1).replace("\"\"", "\"");
+		return new Value(str);
 	}
 }
