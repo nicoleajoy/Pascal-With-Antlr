@@ -15,33 +15,12 @@ public class EvalVisitor extends PascalBaseVisitor<Value> {
 	private Map<String, Value> memory = new HashMap<String, Value>();
 
 
-	@Override
-	public Value visitFunctionBlock(PascalParser.FunctionBlockContext ctx) {
-		System.out.println("function");
-		return Value.VOID;
-	}
-
-
-	@Override
-	public Value visitProcedureBlock(PascalParser.ProcedureBlockContext ctx) {
-		System.out.println("procedure");
-		return Value.VOID;
-	}
-
-
-	@Override
-	public Value visitParameters(PascalParser.ParametersContext ctx) {
-		System.out.println("parameters");
-		return Value.VOID;
-	}
-
-
 	@Override 
 	public Value visitVarSingleDec(PascalParser.VarSingleDecContext ctx) {
 		String id = ctx.ID().getText();
 		Value val = this.visit(ctx.expression());
 		//System.out.println("Value stored: " + v.asString());
-
+		
 		switch (ctx.type.getType()) {
 			case PascalParser.BOOLEAN:
 				// System.out.println("Type: boolean");
@@ -172,6 +151,13 @@ public class EvalVisitor extends PascalBaseVisitor<Value> {
 	public Value visitNegExpression(PascalParser.NegExpressionContext ctx) { 
 		Value val = this.visit(ctx.expression());
 		return new Value(-val.asDouble());
+	}
+
+
+	@Override 
+	public Value visitNotExpression(PascalParser.NotExpressionContext ctx) { 
+		Value val = this.visit(ctx.expression());
+		return new Value(!val.asBoolean());
 	}
 
 
