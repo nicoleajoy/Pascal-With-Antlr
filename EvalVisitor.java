@@ -215,32 +215,32 @@ public class EvalVisitor extends PascalBaseVisitor<Value> {
 	@Override 
 	public Value visitNegExpression(PascalParser.NegExpressionContext ctx) { 
 		Value val = this.visit(ctx.expression());
-        return new Value(-val.asDouble());
+		return new Value(-val.asDouble());
 	}
 
 
 	@Override 
 	public Value visitAndExpression(PascalParser.AndExpressionContext ctx) { 
 		Value left = this.visit(ctx.expression(0));
-        Value right = this.visit(ctx.expression(1));
-        return new Value(left.asBoolean() && right.asBoolean());
+		Value right = this.visit(ctx.expression(1));
+		return new Value(left.asBoolean() && right.asBoolean());
 	}
 
 
 	@Override 
 	public Value visitOrExpression(PascalParser.OrExpressionContext ctx) {
 		Value left = this.visit(ctx.expression(0));
-        Value right = this.visit(ctx.expression(1));
-        return new Value(left.asBoolean() || right.asBoolean());
+		Value right = this.visit(ctx.expression(1));
+		return new Value(left.asBoolean() || right.asBoolean());
 	}
 	
 	
 	@Override 
 	public Value visitEqualityExpression(PascalParser.EqualityExpressionContext ctx) { 
 		Value left = this.visit(ctx.expression(0));
-        Value right = this.visit(ctx.expression(1));
+		Value right = this.visit(ctx.expression(1));
 		
-        switch (ctx.op.getType()) {
+		switch (ctx.op.getType()) {
 			case PascalParser.EQ:
 				if (left != null && right != null) {
 					return new Value(left.equals(right));
@@ -249,7 +249,7 @@ public class EvalVisitor extends PascalBaseVisitor<Value> {
 				if (left != null && right != null)  {
 					return new Value(!left.equals(right));
 				}
-            default:
+			default:
 				throw new RuntimeException("unknown operator: " + PascalParser.tokenNames[ctx.op.getType()]);
 		}
 	}
@@ -258,9 +258,9 @@ public class EvalVisitor extends PascalBaseVisitor<Value> {
 	@Override
 	public Value visitRelationalExpression(PascalParser.RelationalExpressionContext ctx) {
 		Value left = this.visit(ctx.expression(0));
-        Value right = this.visit(ctx.expression(1));
+		Value right = this.visit(ctx.expression(1));
 		
-        switch (ctx.op.getType()) {
+		switch (ctx.op.getType()) {
 			case PascalParser.GT:
 				if (left != null && right != null) {
 					return new Value(left.asDouble() > right.asDouble());
@@ -294,8 +294,8 @@ public class EvalVisitor extends PascalBaseVisitor<Value> {
 	public Value visitWriteInside(PascalParser.WriteInsideContext ctx) {
 		//System.out.println("expression list size: " + ctx.expression().size());
 		String output = "";
-   
-        if (ctx.expression().size() <= 1) {
+		
+		if (ctx.expression().size() <= 1) {
             for (int i = 0; i < ctx.expression().size(); i++) {
 				String token = this.visit(ctx.expression(i)).asString();
 				// String text = ctx.expression(i).getText();
@@ -306,16 +306,16 @@ public class EvalVisitor extends PascalBaseVisitor<Value> {
 			}
 		}
 		else {
-            for (int i = 0; i < ctx.expression().size(); i++) {
-                String token = this.visit(ctx.expression(i)).asString();
-                //String text = ctx.expression(i).getText();
-                if (token != null) {
+			for (int i = 0; i < ctx.expression().size(); i++) {
+				String token = this.visit(ctx.expression(i)).asString();
+				//String text = ctx.expression(i).getText();
+				if (token != null) {
 					output = output + token;
 					//System.out.println(v);
 				}
 			}
 		}
-		 
+		
 		System.out.println(output);
 		return Value.VOID;
 	}
@@ -357,12 +357,12 @@ public class EvalVisitor extends PascalBaseVisitor<Value> {
 
 		if (choice == "true") {
 			return this.visit(ctx.statement(0));
-        }
-        if (choice == "false") {
+		}
+		if (choice == "false") {
 			return this.visit(ctx.statement(1));
-        }
-        
-       return Value.VOID;
+		}
+		
+		return Value.VOID;
 	}
 
 	
@@ -389,13 +389,13 @@ public class EvalVisitor extends PascalBaseVisitor<Value> {
 	@Override
 	public Value visitWhileDoLoop(PascalParser.WhileDoLoopContext ctx) { 
 		Value val = this.visit(ctx.expression());
-
-			while (val.asBoolean() == true) {
-				this.visit(ctx.statements());
-				val = this.visit(ctx.expression());
-			}
-
-        return Value.VOID;
+		
+		while (val.asBoolean() == true) {
+			this.visit(ctx.statements());
+			val = this.visit(ctx.expression());
+		}
+		
+		return Value.VOID;
 	}
 	
 	@Override
