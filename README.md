@@ -16,7 +16,7 @@ Hello! Here are some notes regarding this project.
 
 ### RESOURCES USED
 - [Mu Repository](https://github.com/bkiers/Mu)
-- [TinyLanguage Repository](https://github.com/bkiers/Mu)
+- [TinyLanguage Repository](https://github.com/bkiers/tiny-language-antlr4)
 - [Pascal Tutorial](https://www.tutorialspoint.com/pascal/index.htm)
 
 ### FINAL COMMENTS
