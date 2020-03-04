@@ -1,15 +1,18 @@
-// Resource: https://github.com/bkiers/Mu/blob/master/src/main/java/mu/Value.java
+// Project 2
+// By Nicole Ajoy & Yvette Williamson
+
+//----------------------------------------------------//
 
 public class Value {
     final Object value;
     
     public static Value VOID = new Value(new Object());
 
-    public Value() {
+    Value() {
         value = null;
     }
 
-    public Value(Object v) {
+    Value(Object v) {
         value = v;
     }
 
@@ -23,6 +26,10 @@ public class Value {
 
     public String asString() {
         return String.valueOf(value);
+    }
+
+    public boolean isNumber() {
+        return value instanceof Number;
     }
 
     public boolean isDouble() {
@@ -43,7 +50,15 @@ public class Value {
         if (o.getClass() != value.getClass()) {
             return false;
         }
+
         Value that = (Value)o;
-        return this.value.equals(that.value);
+
+        if (this.isNumber() && that.isNumber()) {
+            double diff = Math.abs(this.asDouble() - that.asDouble());
+            return diff < 0.00000000001;
+        }
+        else {
+            return this.value.equals(that.value);
+        }
     }
 }
