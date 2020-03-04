@@ -18,8 +18,8 @@ public class EvalVisitor extends PascalBaseVisitor<Value> {
 	private Map<String, String> procedure = new HashMap<String, String>();
 	Scope scopefunc = new Scope();
 
-	int calls =0;
-	int pcalls=0;
+	int calls = 0;
+	int pcalls = 0;
 
 
 	@Override
