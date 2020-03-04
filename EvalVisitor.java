@@ -5,13 +5,14 @@
 
 import org.antlr.v4.runtime.misc.NotNull;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
 public class EvalVisitor extends PascalBaseVisitor<Value> {
-	private Map<String,Value> memory = new HashMap<String,Value>();
+	private Map<String, Value> memory = new HashMap<String, Value>();
 
 	private Scope scope = new Scope();
 	private Map<String, String> function = new HashMap<String, String>();
@@ -23,13 +24,13 @@ public class EvalVisitor extends PascalBaseVisitor<Value> {
 
 
 	@Override
-	public Value visitFunctionBlock(PascalParser.FunctionBlockContext ctx){
+	public Value visitFunctionBlock(PascalParser.FunctionBlockContext ctx) {
 		System.out.println("function");
 		String id = ctx.ID().getText();
 		System.out.println(id);
 		function.put("new", id);
-		String pars = ctx.parameters(0).getText();
-		Value val = this.visit(ctx.parameters(0));
+		String pars = ctx.parameters().getText();
+		Value val = this.visit(ctx.parameters());
 		
 		List<String> elephantList = Arrays.asList(pars.split(",|:"));
 		System.out.println("this is : "+elephantList.size());
@@ -54,7 +55,7 @@ public class EvalVisitor extends PascalBaseVisitor<Value> {
 
 
 	@Override
-	public Value visitProcedureBlock(PascalParser.ProcedureBlockContext ctx){
+	public Value visitProcedureBlock(PascalParser.ProcedureBlockContext ctx) {
 		System.out.println("procedure");
 		String id = ctx.ID().getText();
 		System.out.println(id);
@@ -66,7 +67,7 @@ public class EvalVisitor extends PascalBaseVisitor<Value> {
 
 
 	@Override
-	public Value visitParameters(PascalParser.ParametersContext ctx){
+	public Value visitParameters(PascalParser.ParametersContext ctx) {
 		//System.out.println("parameters");
 		String id = function.get(0);
 		//String id = funcalls[0];
@@ -129,7 +130,7 @@ public class EvalVisitor extends PascalBaseVisitor<Value> {
 	public Value visitAssignStatement(PascalParser.AssignStatementContext ctx) {
 		String id = ctx.ID().getText();
 		Value val = this.visit(ctx.expression());
-		scope.setValue(id, v);
+		scope.setValue(id, val);
 		//System.out.println("Id: " + id + " | Value: " + v.asString());
 		return memory.put(id, val);
 	}
