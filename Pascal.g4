@@ -1,7 +1,7 @@
-/***** PROJECT 2 *****/
+// Project 2
 // By Nicole Ajoy & Yvette Williamson
 
-/*----------------------------------------------------*/
+//----------------------------------------------------//
 
 grammar Pascal;
 
@@ -111,7 +111,7 @@ whileDoLoop
    ;
 
 forDoLoop
-   : FOR ID ':=' expression TO expression DO BEGIN statements END
+   : FOR ID ':=' expression count=(TO | DOWNTO) expression DO BEGIN statements END
    ;
 
 writeStatement
@@ -161,6 +161,7 @@ BOOLEAN        : 'boolean';
 CASE           : 'case';
 CONST          : 'const';
 DO             : 'do';
+DOWNTO         : 'downto';
 FUNCTION       : 'function';
 OF             : 'of';
 ELSE           : 'else';
