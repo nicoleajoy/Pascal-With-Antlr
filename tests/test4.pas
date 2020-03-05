@@ -1,4 +1,4 @@
-program Test4;
+program test4;
 var
     var1, var2 : real;
     var3 : boolean;

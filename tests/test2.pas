@@ -1,15 +1,10 @@
-program Test2;
+program test2;
 
-{ No output. }
-
+var
+    num1, num2 : real;
 begin
-end.
-
-begin
-end.
-
-begin
-end.
-
-begin
+  writeln ('Enter two numbers:');
+  readln(num1, num2);
+  writeln('num1 = ', num1);
+  writeln('num2 = ', num2);
 end.

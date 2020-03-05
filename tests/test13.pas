@@ -1,8 +1,3 @@
-(*output: not(a and b) = TRUE
-        ((a or b)or a) and b) = FALSE
-        (a and b) and b = FALSE
-        (a and b) and b = FALSE
-        Line 1 - Condition is true *)
 program test13;
 var    a, b, c: boolean;
 

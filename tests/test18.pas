@@ -1,4 +1,4 @@
-program test17;
+program test18;
 var
    a: real;
 

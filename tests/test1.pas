@@ -1,6 +1,4 @@
-program Test1;
-
-{ No output. }
+program test1;
 
 begin
 end.

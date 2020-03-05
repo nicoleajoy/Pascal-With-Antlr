@@ -1,4 +1,3 @@
-(*output: -49.0*)
 program test14;
 var x, y: real;
 begin

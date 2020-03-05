@@ -1,4 +1,4 @@
-program exFunction;
+program test20;
 var
    a, b, ret : real;
 
