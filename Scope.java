@@ -52,12 +52,20 @@ public class Scope {
     public void setValue(String id, Value val) {
         // Variable exists in scope, so update its value
         if (getValue(id) != null) {
-            this.resetValue(id, val);
+            symbolTable.replace(id, val);
         }
         // Create a variable in current scope
         else {
             symbolTable.put(id, val);
         }
+    }
+
+    public void clearValue() {
+        symbolTable.clear();
+    }
+
+    public void rem(String val) {
+        symbolTable.remove(val);
     }
 
     public void resetValue(String id, Value val) {
@@ -69,6 +77,10 @@ public class Scope {
         else if (parentScope != null) {
             parentScope.resetValue(id, val);
         }
+    }
+
+    public int size() {
+        return symbolTable.size();
     }
 
     @Override

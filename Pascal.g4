@@ -101,7 +101,7 @@ atom
    ;
 
 ifStatement
-   : IF expression THEN statement (ELSE statement)?
+   : IF expression THEN statement (CONTINUE)?(BREAK)? (ELSE statement (BREAK)?(CONTINUE)?)?
    ;
 
 caseStatement
@@ -160,8 +160,10 @@ COMMENT_P      : '(*' (.*?) '*)' -> skip;
 // keywords
 BEGIN          : 'begin';
 BOOLEAN        : 'boolean';
+BREAK          : 'break';
 CASE           : 'case';
 CONST          : 'const';
+CONTINUE       : 'continue';
 DO             : 'do';
 DOWNTO         : 'downto';
 FUNCTION       : 'function';
