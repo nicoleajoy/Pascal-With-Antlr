@@ -12,7 +12,7 @@ Hello! Here are some notes regarding this project.
     javac *.java
     java Main tests/test20.pas
 
-(NOTE: test number ranges from 1-20)
+(NOTE: test number ranges from 1-22)
 
 ### COMMENTS
 In order to enter input, please enter ONLY real values. If you want to enter more than one value, please enter the digits and press [ENTER] after every number. Do NOT include spaces or commas.
