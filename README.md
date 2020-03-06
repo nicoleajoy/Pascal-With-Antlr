@@ -26,6 +26,10 @@ When working with if-statements and using real numbers as the condition, this ma
 
 When writing user-defined functions/procedures, they MUST be written before the main block. Also, global variable declararions MUST be written right before the main block.
 
+Need to have at least one variable in a function call (will NOT actually pass to. function).
+
+Each "for" and "while" blocks need variable declarations and continue was NOT implemented
+
 ### EXTRA STUFF
 Added a DOWNTO for loop (see Test19) that counts down by one instead of counting up.
 
