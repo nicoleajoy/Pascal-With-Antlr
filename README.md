@@ -14,11 +14,6 @@ Hello! Here are some notes regarding this project.
 
 (NOTE: test number ranges from 1-20)
 
-### RESOURCES USED
-- [Mu Repository](https://github.com/bkiers/Mu)
-- [TinyLanguage Repository](https://github.com/bkiers/tiny-language-antlr4)
-- [Pascal Tutorial](https://www.tutorialspoint.com/pascal/index.htm)
-
 ### COMMENTS
 In order to enter input, please enter ONLY real values. If you want to enter more than one value, please enter the digits and press [ENTER] after every number. Do NOT include spaces or commas.
 
@@ -32,6 +27,11 @@ Each "for" and "while" blocks need variable declarations and continue was NOT im
 
 ### EXTRA STUFF
 Added a DOWNTO for loop (see Test19) that counts down by one instead of counting up.
+
+### RESOURCES USED
+- [Mu Repository](https://github.com/bkiers/Mu)
+- [TinyLanguage Repository](https://github.com/bkiers/tiny-language-antlr4)
+- [Pascal Tutorial](https://www.tutorialspoint.com/pascal/index.htm)
 
 ### FIN
 Thank you.
