@@ -1,4 +1,10 @@
-program test8;
+(* Output:
+a and b = false
+a or b = true
+(a or b) and b = true
+*)
+
+program Test8;
 
 var
     a, b, c: boolean;

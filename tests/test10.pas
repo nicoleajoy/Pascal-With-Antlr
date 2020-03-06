@@ -1,4 +1,14 @@
-program test10;
+(* Output:
+Line 1 - a is not equal to b
+Line 2 - a is not less than b
+Line 3 - a is greater than b
+> Change values of a and b
+Line 4 - a is either less than or equal to b
+> Doing b:=a
+Line 5 - b is either greater than or equal to b
+*)
+
+program Test10;
 var
 a, b: real;
 
@@ -22,13 +32,15 @@ begin
       writeln('Line 3 - a is greater than b' );
   
    (* Lets change value of a and b *)
-   writeln('Lets change value of a and b');
+   writeln('> Change values of a and b');
    a := 5;
    b := 20;
    
    if (a <= b) then
       writeln('Line 4 - a is either less than or equal to b' );
    
+   (* Lets change value of a and b *)
+   writeln('> Doing b:=a');
    b := a;
    
    if (b >= a) then

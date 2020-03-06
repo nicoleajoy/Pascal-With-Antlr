@@ -1,40 +1,28 @@
-program test20;
-var
-   a, b, ret : real;
+(* Output:
+me 100.0
+Max value is :
+*)
 
-(*function definition *)
-function max(num1, num2: real): real;
-var
-   (* local variable declaration *)
-   result: real;
+program Test20;
 
+(* Function *)
+function high(num1, num2: real): real;
+var
+   num1, num2, num: real;
 begin
-   if (num1 > num2) then
-      result := num1
-   
-   else
-      result := num2;
-   max := result;
+   num1 := 9;
+   num2 := 2;
+   writeln('a ', a);
+   writeln('b ', b);
 end;
 
-procedure findMin(x, y, z: real); 
-(* Finds the minimum of the 3 values *)
-
-begin
-   if x < y then
-      x := 10
-   else
-      x := y;
-   
-   if z < y then
-      x := z;
-end; { end of procedure findMin }  
-
+(* Global *)
+var
+   a, b, c : real;
 begin
    a := 100;
    b := 200;
-   (* calling a function to get max value *)
-   ret := max(a, b);
-   
-   writeln( 'Max value is : ', ret );
+   c := 20;
+   high(a, b);
+   writeln('Max value is : ');
 end.

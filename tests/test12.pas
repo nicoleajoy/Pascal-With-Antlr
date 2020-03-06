@@ -7,7 +7,6 @@ num1: real;
 
    if (num1 <= 1) then
       writeln(' Good Bye!')
-
    else
       writeln('Please Continue');
 end.
